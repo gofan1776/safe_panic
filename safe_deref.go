@@ -38,3 +38,47 @@ func Recoverer(message Message) {
 		}
 	}
 }
+
+var Generator = &recoverer_generator{c: make(chan func(Message), 100)}
+
+func init() {
+	for i := 0; i < 100; i++ {
+		Generator.Put(func(message Message) {
+			if e, isError := recover().(error); isError {
+				if errorTwo, okay := e.(runtime.Error); okay {
+					if stringEquals(errorTwo.Error(), ErrorConstant) {
+						p := newPrinter()
+						p.print(&message)
+					}
+				}
+			}
+		})
+	}
+}
+
+type recoverer_generator struct{ c chan func(Message) }
+
+func (r *recoverer_generator) Get() (f func(Message)) {
+	select {
+	case f = <-r.c:
+	default:
+		f = func(message Message) {
+			if e, isError := recover().(error); isError {
+				if errorTwo, okay := e.(runtime.Error); okay {
+					if stringEquals(errorTwo.Error(), ErrorConstant) {
+						p := newPrinter()
+						p.print(&message)
+					}
+				}
+			}
+		}
+	}
+	return
+}
+
+func (r *recoverer_generator) Put(f func(Message)) {
+	select {
+	case r.c <- f:
+	default:
+	}
+}
