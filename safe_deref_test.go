@@ -1,4 +1,4 @@
-package safe_deref
+package safe_panic
 
 type T struct {
 	A *struct {
