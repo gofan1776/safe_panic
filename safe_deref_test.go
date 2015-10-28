@@ -14,7 +14,10 @@ func ExampleMain() {
 	// just call this one super easy line!
 	// spotting the null dereferenced pointer is left as an
 	// exercise for the reader.
-	defer Recoverer(Message("oopsie daisy!"))
+
+	r := Generator.Get()
+	defer Generator.Put(r)
+	defer r("oopsie daisy!")
 
 	baz := func(fn1 func(), fn ...func(func())) {
 		for i := range fn {
