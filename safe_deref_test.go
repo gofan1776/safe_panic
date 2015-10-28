@@ -10,7 +10,7 @@ type T struct {
 }
 
 // main at the bottom like every God-fearing program should be.
-func ExampleMain() {
+func Example_main() {
 	// just call this one super easy line!
 	// spotting the null dereferenced pointer is left as an
 	// exercise for the reader.
