@@ -14,7 +14,7 @@ func ExampleMain() {
 	// just call this one super easy line!
 	// spotting the null dereferenced pointer is left as an
 	// exercise for the reader.
-	defer Recoverer(MessageType("oopsie daisy!"))
+	defer Recoverer(Message("oopsie daisy!"))
 
 	baz := func(fn1 func(), fn ...func(func())) {
 		for i := range fn {
@@ -29,6 +29,7 @@ func ExampleMain() {
 	quux := func(fn func()) func() {
 		return fn
 	}
+	_ = quux
 
 	foo := func() {
 		t := new(T)

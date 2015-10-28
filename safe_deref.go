@@ -14,7 +14,7 @@ func (p *printer) print(msg *Message) {
 	fmt.Println(msg)
 }
 
-// a factory like my CS 202 professor taught
+// a factory generator
 func newPrinter() *printer {
 	_printer := new(printer)
 	return _printer
@@ -26,12 +26,14 @@ func stringEquals(stringOne, s2 string) bool {
 	return stringOne == s2
 }
 
+var ErrorConstant = "runtime error: invalid memory address or nil pointer dereference"
+
 func Recoverer(message Message) {
 	if e, isError := recover().(error); isError {
 		if errorTwo, okay := e.(runtime.Error); okay {
-			if stringEquals(errorTwo.Error(), errorConstant) {
+			if stringEquals(errorTwo.Error(), ErrorConstant) {
 				p := newPrinter()
-				p.print(&msg)
+				p.print(&message)
 			}
 		}
 	}
